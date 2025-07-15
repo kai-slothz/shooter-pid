@@ -18,16 +18,22 @@ public final class Constants {
 
   public static final class Shooter{
 
-    public static final Map<Double, Double> RPM_TABLE = Map.ofEntries(
-    Map.entry(1.0, 1000.0),
-    Map.entry(2.0, 4000.0),
-    Map.entry(3.0, 8000.0)
+    public static enum ShooterMode {
+      LOW, 
+      MEDIUM,
+      HIGH,
+    }
+
+    public static final Map<ShooterMode, Double> SHOOTER_RPM_MAP = Map.of(
+      ShooterMode.LOW, 2000.0, // TODO: Tune these values
+      ShooterMode.MEDIUM, 3000.0, // TODO: Tune these values
+      ShooterMode.HIGH, 4000.0 //TODO: Tune these values
     );
-  
+
     public static final int LEFT_MOTOR_ID = 10;
     public static final int RIGHT_MOTOR_ID = 11;
 
-    public static final double k_LeftFeedForward = 0.1; //TDOD tune this
+    public static final double k_LeftFeedForward = 0.1; //TODO tune this
     public static final double k_RightFeedForward = 0.1; //TODO tune this
   
     public static final double RIGHT_FLYWHEEL_P = 0.0001; //TODO tune this
