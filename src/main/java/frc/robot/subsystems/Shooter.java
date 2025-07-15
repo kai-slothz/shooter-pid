@@ -10,8 +10,8 @@ import com.ctre.phoenix6.controls.VoltageOut;
 
 public class Shooter extends SubsystemBase {
 
-  PIDController lead_Controller = new PIDController(Constants.Shooter.RIGHT_FLYWHEEL_P, 0, 0);
-  PIDController follower_Controller = new PIDController(Constants.Shooter.LEFT_FLYWHEEL_P, 0, 0);
+  PIDController right_PidController = new PIDController(Constants.Shooter.RIGHT_FLYWHEEL_P, 0, 0);
+  PIDController left_PidController = new PIDController(Constants.Shooter.LEFT_FLYWHEEL_P, 0, 0);
   
   private final SimpleMotorFeedforward m_RightFeedFoward = new SimpleMotorFeedforward(0.1, Constants.Shooter.k_RightFeedForward, 0.001);
 
@@ -20,22 +20,14 @@ public class Shooter extends SubsystemBase {
 
   private VoltageOut m_RightMotorRequest;
 
-
-  public void follow() {
-    Follower followRequest = new Follower(m_RightMotor.getDeviceID(), false);
-    m_LeftMotor.setControl(followRequest);
-  }
-
-
   public Shooter(){
     m_RightMotor = new TalonFX(Constants.Shooter.RIGHT_MOTOR_ID);
     m_LeftMotor= new TalonFX(Constants.Shooter.LEFT_MOTOR_ID);
 
     m_RightMotorRequest = new VoltageOut(0.0);
 
-    follow();
+    m_LeftMotor.setControl(new Follower(m_RightMotor.getDeviceID(), false));
   }
-
 
   public double getMotorRPM(){
     return m_RightMotor.getVelocity().getValueAsDouble() * 60;
@@ -43,8 +35,8 @@ public class Shooter extends SubsystemBase {
 
   public void setMotorRPM(){
     double currentRPM = getMotorRPM();
-    double pidOutput = lead_Controller.calculate(currentRPM, Constants.Shooter.rpmSpeed);
-    m_RightMotorRequest = new VoltageOut(pidOutput + m_RightFeedFoward.calculate(Constants.Shooter.rpmSpeed));
+    double pidOutput = right_PidController.calculate(currentRPM, Constants.Shooter.RPM_TABLE.get(1.0));
+    m_RightMotorRequest.withOutput(pidOutput + m_RightFeedFoward.calculate(Constants.Shooter.rpmSpeed));
   }
 
   @Override
@@ -52,5 +44,5 @@ public class Shooter extends SubsystemBase {
     super.periodic();
     m_RightMotor.setControl(m_RightMotorRequest);
   }
-
+  
 }
