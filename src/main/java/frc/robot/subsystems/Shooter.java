@@ -17,6 +17,7 @@ public class Shooter extends SubsystemBase {
   private final SimpleMotorFeedforward m_RightFeedForward = new SimpleMotorFeedforward(0.1, Constants.Shooter.k_RightFeedForward, 0.001);
   private final SimpleMotorFeedforward m_LeftFeedForward = new SimpleMotorFeedforward(0.1, Constants.Shooter.k_LeftFeedForward, 0.001);
 
+  private boolean shooting = false;
 
   private TalonFX m_RightMotor;
   private TalonFX m_LeftMotor; 
