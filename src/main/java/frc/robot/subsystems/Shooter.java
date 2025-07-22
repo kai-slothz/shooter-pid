@@ -56,6 +56,10 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic(){
     super.periodic();
+    if (!activated){
+      m_RightMotor.stopMotor()
+      m_LeftMotor.stopMotor()
+    }
     
 }
 
