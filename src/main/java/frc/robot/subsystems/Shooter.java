@@ -2,10 +2,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.hardware.TalonFX;
+
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.ShooterMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 
@@ -23,6 +24,8 @@ public class Shooter extends SubsystemBase {
 
   private VoltageOut m_RightMotorRequest;
   private VoltageOut m_LeftMotorRequest;
+
+  private ShooterMode shooterMode = ShooterMode.STOP;
 
   public Shooter(){
     m_RightMotor = new TalonFX(Constants.Shooter.RIGHT_MOTOR_ID);
@@ -55,7 +58,25 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic(){
     super.periodic();
+
+    switch (shooterMode) {
+      case LOW:
+        setMotorsRPM(Constants.Shooter.ShooterMode.LOW.leftRpm, Constants.Shooter.ShooterMode.LOW.rightRpm);
+        break;
     
+      case MEDIUM:
+        setMotorsRPM(Constants.Shooter.ShooterMode.MEDIUM.leftRpm, Constants.Shooter.ShooterMode.MEDIUM.rightRpm);
+        break;
+
+      case HIGH:
+        setMotorsRPM(Constants.Shooter.ShooterMode.HIGH.leftRpm, Constants.Shooter.ShooterMode.HIGH.rightRpm);
+        break;
+
+      default:
+        setMotorsRPM(Constants.Shooter.ShooterMode.STOP.leftRpm, Constants.Shooter.ShooterMode.STOP.rightRpm);
+        break;
+    }
+
 }
 
 }

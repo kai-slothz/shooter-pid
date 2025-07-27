@@ -18,17 +18,20 @@ public final class Constants {
 
   public static final class Shooter{
 
-    public static enum ShooterMode {
-      LOW, 
-      MEDIUM,
-      HIGH,
-    }
+    public enum ShooterMode {
+      LOW(1800.0, 2000.0),
+      MEDIUM(2500.0, 3000.0),
+      HIGH(3500.0, 4000.0),
+      STOP(0.0, 0.0);
 
-    public static final Map<ShooterMode, Double> SHOOTER_RPM_MAP = Map.of(
-      ShooterMode.LOW, 2000.0, // TODO: Tune these values
-      ShooterMode.MEDIUM, 3000.0, // TODO: Tune these values
-      ShooterMode.HIGH, 4000.0 //TODO: Tune these values
-    );
+      public final double leftRpm;
+      public final double rightRpm;
+      
+      ShooterMode(double leftRpm, double rightRpm) {
+        this.leftRpm = leftRpm;
+        this.rightRpm = rightRpm;
+      }
+    }
 
     public static final int LEFT_MOTOR_ID = 10;
     public static final int RIGHT_MOTOR_ID = 11;
